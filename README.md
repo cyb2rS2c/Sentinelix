@@ -29,8 +29,11 @@
 1. Clone the repository:
 
 ```bash
-sudo su;sudo git clone https://github.com/cyb2rS2c/RedFlag.git /opt/RedFlag
-cd /opt/RedFlag;chmod +x fix_owner.sh;./fix_owner.sh
+sudo su
+git clone https://github.com/cyb2rS2c/RedFlag.git /opt/RedFlag
+cd /opt/RedFlag
+chmod +x fix_owner.sh
+./fix_owner.sh
 ```
 
 ## Configuration
