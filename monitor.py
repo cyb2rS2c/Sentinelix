@@ -6,6 +6,8 @@ import logging
 import re
 import os
 from collections import defaultdict
+import threading
+import time
 from config import (
     FORBIDDEN_COMMANDS,
     IGNORE_COMM,
@@ -13,7 +15,13 @@ from config import (
     ENABLE_USER_WARNING,
     ENABLE_SCREEN_LOCK,
     ENABLE_LOGOUT,
+    ENABLE_ACCOUNT_LOCK,
+    ACCOUNT_LOCK_THRESHOLD,
+    ENABLE_AUTO_UNLOCK,
+    ACCOUNT_LOCK_DURATION,
     VIOLATION_THRESHOLD,
+    
+   
 )
 
 violations = defaultdict(int)
@@ -147,6 +155,39 @@ def lock_screen(uid):
         subprocess.run(["loginctl", "lock-session", session], check=False)
         print(f"[+] Locked session {session} for UID {uid}")
 
+def unlock_account(uid):
+    """Unlock a previously locked user account."""
+    try:
+        subprocess.run(
+            ["usermod", "-U", f"#{uid}"],
+            check=False
+        )
+        print(f"[+] Unlocked account for UID {uid}")
+    except Exception as e:
+        print(f"[!] Failed to unlock account for UID {uid}: {e}")
+def lock_account(uid):
+    """Lock the user account and schedule auto-unlock."""
+    if not ENABLE_ACCOUNT_LOCK:
+        return
+
+    subprocess.run(
+        ["usermod", "-L", f"#{uid}"],
+        check=False
+    )
+    print(f"[+] Locked account for UID {uid}")
+
+    if ENABLE_AUTO_UNLOCK:
+        schedule_account_unlock(uid, ACCOUNT_LOCK_DURATION)
+
+def schedule_account_unlock(uid, delay_seconds):
+    """Automatically unlock a user account after a delay."""
+    def _unlock_later():
+        print(f"[i] Auto-unlock scheduled for UID {uid} in {delay_seconds}s")
+        time.sleep(delay_seconds)
+        unlock_account(uid)
+
+    t = threading.Thread(target=_unlock_later, daemon=True)
+    t.start()
 def logout_user(uid):
     """Logout all active sessions for a given UID."""
     if not ENABLE_LOGOUT:
@@ -160,8 +201,10 @@ def handle_violation(uid, cmd, comm="unknown", msg="", entry=None):
     """Handle forbidden command violations."""
     if cmd in last_violation[uid]:
         return
+
     last_violation[uid].add(cmd)
     violations[uid] += 1
+
     print(f"[!] UID {uid} violated: {cmd}")
     log_violation(uid, comm, cmd, msg)
     notify_root(f"UID {uid} executed forbidden command: {cmd}")
@@ -174,6 +217,9 @@ def handle_violation(uid, cmd, comm="unknown", msg="", entry=None):
 
     if ENABLE_LOGOUT and violations[uid] >= VIOLATION_THRESHOLD:
         logout_user(uid)
+
+    if ENABLE_ACCOUNT_LOCK and violations[uid] >= ACCOUNT_LOCK_THRESHOLD:
+        lock_account(uid)
 
 def monitor_journal():
     process = subprocess.Popen(
