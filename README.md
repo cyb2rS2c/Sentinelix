@@ -35,12 +35,40 @@ chmod +x deploy.sh;./deploy.sh
 ## Configuration (Editable)
 
 All configuration is handled in **config.py**:
-- FORBIDDEN_COMMANDS: Commands that trigger warnings or actions.
+
+- FORBIDDEN_COMMANDS: Commands that trigger warnings or enforcement actions.
 - IGNORE_COMM: Processes to skip monitoring.
-- ENABLE_ROOT_NOTIFICATION: Alerts root with wall.
-- ENABLE_USER_WARNING: Shows warnings in user terminals and logs to per-user files.
-- ENABLE_SCREEN_LOCK / ENABLE_LOGOUT: Optional automated actions.
+- ENABLE_ROOT_NOTIFICATION: Alert root using wall.
+- ENABLE_USER_WARNING: Show warnings in user terminals and log to per-user files.
+
+- ENABLE_SCREEN_LOCK: Lock active user sessions on violation.
+- ENABLE_LOGOUT: Terminate active user sessions after repeated violations.
+- ENABLE_ACCOUNT_LOCK: Lock the user account to prevent future logins.
+- ENABLE_AUTO_UNLOCK: Automatically unlock the account after a timeout.
+
 - VIOLATION_THRESHOLD: Number of violations before logout.
+- ACCOUNT_LOCK_THRESHOLD: Number of violations before account lock.
+- ACCOUNT_LOCK_DURATION: Duration (in seconds) before an auto-unlocked account is restored.
+
+
+## Example configuration
+```
+ENABLE_ROOT_NOTIFICATION = True
+ENABLE_USER_WARNING = True
+
+# Enforcement actions
+ENABLE_SCREEN_LOCK = True          # Lock active sessions on violation
+ENABLE_LOGOUT = False              # Terminate sessions after threshold
+ENABLE_ACCOUNT_LOCK = True         # Lock user account (disable logins)
+ENABLE_AUTO_UNLOCK = True          # Automatically unlock after timeout
+
+# Thresholds
+VIOLATION_THRESHOLD = 2            # Violations before logout
+ACCOUNT_LOCK_THRESHOLD = 5         # Violations before account lock
+
+# Timers
+ACCOUNT_LOCK_DURATION = 900        # Seconds (15 minutes)
+```
 
 ## Usage
 
@@ -59,6 +87,7 @@ sudo cat /var/log/user_activity.log
 ```bash
 sudo cat /var/log/user_warnings/<username>.log
 ```
+
 
 ## Author
 cyb2rS2c - [GitHub Profile](https://github.com/cyb2rS2c)
