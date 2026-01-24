@@ -18,7 +18,7 @@ from config import (
 
 violations = defaultdict(int)
 
-def setup_logger(log_file="user_activity.log"):
+def setup_logger(log_file="/var/log/user_activity.log"):
     logger = logging.getLogger("UserMonitor")
     logger.setLevel(logging.INFO)
     file_handler = logging.FileHandler(log_file, mode='a', encoding='utf-8')
