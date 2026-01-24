@@ -20,8 +20,6 @@ from config import (
     ENABLE_AUTO_UNLOCK,
     ACCOUNT_LOCK_DURATION,
     VIOLATION_THRESHOLD,
-    
-   
 )
 
 violations = defaultdict(int)
@@ -166,15 +164,17 @@ def unlock_account(uid):
     except Exception as e:
         print(f"[!] Failed to unlock account for UID {uid}: {e}")
 def lock_account(uid):
-    """Lock the user account and schedule auto-unlock."""
     if not ENABLE_ACCOUNT_LOCK:
         return
 
-    subprocess.run(
-        ["usermod", "-L", f"#{uid}"],
-        check=False
-    )
-    print(f"[+] Locked account for UID {uid}")
+    try:
+        username = pwd.getpwuid(int(uid)).pw_name
+    except KeyError:
+        print(f"[!] No username for UID {uid}")
+        return
+
+    subprocess.run(["usermod", "-L", username], check=False)
+    print(f"[+] Locked account for {username} (UID {uid})")
 
     if ENABLE_AUTO_UNLOCK:
         schedule_account_unlock(uid, ACCOUNT_LOCK_DURATION)
