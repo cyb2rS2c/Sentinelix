@@ -1,0 +1,15 @@
+[Unit]
+Description=RedFlag User Activity Monitor
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 __SCRIPT_PATH__
+WorkingDirectory=__REPO_PATH__
+Restart=always
+User=__USER__
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
