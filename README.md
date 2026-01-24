@@ -30,7 +30,7 @@ cd /opt/RedFlag;chmod +x fix_owner.sh;./fix_owner.sh
 ```
 2. Deploy the service:
 ```bash
-chmod +x deploy.sh;./deploy.sh
+./deploy.sh
 ```
 ## Configuration (Editable)
 
