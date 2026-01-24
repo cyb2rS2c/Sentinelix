@@ -20,7 +20,7 @@
   - `/var/log/user_activity.log` (central log for admins)
   - `/var/log/user_warnings/<username>.log` (per-user warnings)
 - Notifies root via `wall` for critical violations.
-- Supports configurable actions as mentioned here: [Configuration](https://github.com/cyb2rS2c/RedFlag/edit/main/README.md#Configuration (Editable))
+- Supports configurable actions as mentioned here: [Configuration](https://github.com/cyb2rS2c/RedFlag/edit/main/README.md#Configuration)
 
 ---
 
@@ -33,7 +33,7 @@ sudo su;sudo git clone https://github.com/cyb2rS2c/RedFlag.git /opt/RedFlag
 cd /opt/RedFlag;chmod +x fix_owner.sh;./fix_owner.sh
 ```
 
-## Configuration (Editable)
+## Configuration
 
 All configuration is handled in **config.py**:
 
