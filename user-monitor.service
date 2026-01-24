@@ -3,11 +3,11 @@ Description=RedFlag User Activity Monitor
 After=network.target
 
 [Service]
+User=root
 Type=simple
-ExecStart=/usr/bin/python3 __SCRIPT_PATH__
-WorkingDirectory=__REPO_PATH__
+ExecStart=/usr/bin/python3 /opt/RedFlag/monitor.py
+WorkingDirectory=/opt/RedFlag
 Restart=always
-User=__USER__
 StandardOutput=journal
 StandardError=journal
 
