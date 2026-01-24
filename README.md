@@ -1,6 +1,6 @@
 # RedFlag
 
-**RedFlag** is a real-time user activity monitor designed to track forbidden commands on Linux systems. It alerts both administrators and users when sensitive or dangerous operations are attempted, logs all violations, and can take automated actions such as warnings, screen locks, or user logouts.  
+**RedFlag** is a real-time user activity monitoring service designed to track forbidden commands on Linux systems. It alerts both administrators and users when sensitive or dangerous operations are attempted, logs all violations, and can take automated actions such as warnings, screen locks, or user logouts.  
 
 ---
 
@@ -34,8 +34,7 @@ pip3 install -r requirements.txt
 ```
 3. Deploy the monitor:
 ```bash
-chmod +x deploy.sh
-./deploy.sh
+chmod +x deploy.sh;./deploy.sh
 ```
 ## Configuration
 
