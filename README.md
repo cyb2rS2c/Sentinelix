@@ -25,8 +25,8 @@
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/cyb2rS2c/RedFlag.git
-cd RedFlag
+sudo su;sudo git clone https://github.com/cyb2rS2c/RedFlag.git /opt/RedFlag
+cd /opt/RedFlag;chmod +x fix_owner.sh;./fix_owner.sh
 ```
 2. Deploy the service:
 ```bash
@@ -87,7 +87,11 @@ sudo cat /var/log/user_activity.log
 ```bash
 sudo cat /var/log/user_warnings/<username>.log
 ```
-
+## Notes
+- If an account has been locked by RedFlag and you don’t want to wait for the 15‑minute auto‑unlock period, you can manually unlock it with:
+```bash
+sudo usermod -U <username>
+```
 
 ## Author
 cyb2rS2c - [GitHub Profile](https://github.com/cyb2rS2c)
