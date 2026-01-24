@@ -1,6 +1,13 @@
 # RedFlag
 
-**RedFlag** is a real-time user activity monitoring service designed to track forbidden commands on Linux systems. It alerts both administrators and users when sensitive or dangerous operations are attempted, logs all violations, and can take automated actions such as warnings, screen locks, or user logouts.  
+![Python](https://img.shields.io/badge/Python-3.8%2B-blue?logo=python)
+![Platform](https://img.shields.io/badge/%7C%20Linux-green?logo=linux)
+![License](https://img.shields.io/badge/License-MIT-yellow)
+![Version](https://img.shields.io/badge/Version-1.0-orange)
+
+---
+
+> **RedFlag** is a real-time user activity monitoring service for Linux systems. It tracks attempts to run forbidden or sensitive commands and immediately alerts both administrators and users. All violations are logged for accountability, and the service can take automated actions such as sending warnings, locking screens, temporarily locking user accounts, or logging users out. 
 
 ---
 
@@ -13,10 +20,7 @@
   - `/var/log/user_activity.log` (central log for admins)
   - `/var/log/user_warnings/<username>.log` (per-user warnings)
 - Notifies root via `wall` for critical violations.
-- Supports configurable actions:
-  - Lock user screen
-  - Force logout
-  - Set violation thresholds
+- Supports configurable actions as mentioned here: [Configuration](https://github.com/cyb2rS2c/RedFlag/edit/main/README.md#Configuration (Editable))
 
 ---
 
@@ -28,10 +32,7 @@
 sudo su;sudo git clone https://github.com/cyb2rS2c/RedFlag.git /opt/RedFlag
 cd /opt/RedFlag;chmod +x fix_owner.sh;./fix_owner.sh
 ```
-2. Deploy the service:
-```bash
-./deploy.sh
-```
+
 ## Configuration (Editable)
 
 All configuration is handled in **config.py**:
@@ -68,6 +69,11 @@ ACCOUNT_LOCK_THRESHOLD = 5         # Violations before account lock
 
 # Timers
 ACCOUNT_LOCK_DURATION = 900        # Seconds (15 minutes)
+```
+
+2. Deploy the service:
+```bash
+./deploy.sh
 ```
 
 ## Usage
