@@ -28,15 +28,11 @@
 git clone https://github.com/cyb2rS2c/RedFlag.git
 cd RedFlag
 ```
-2. Install dependencies:
-```bash
-pip3 install -r requirements.txt
-```
-3. Deploy the monitor:
+2. Deploy the service:
 ```bash
 chmod +x deploy.sh;./deploy.sh
 ```
-## Configuration
+## Configuration (Editable)
 
 All configuration is handled in **config.py**:
 - FORBIDDEN_COMMANDS: Commands that trigger warnings or actions.
