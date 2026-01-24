@@ -20,7 +20,7 @@
   - `/var/log/user_activity.log` (central log for admins)
   - `/var/log/user_warnings/<username>.log` (per-user warnings)
 - Notifies root via `wall` for critical violations.
-- Supports configurable actions as mentioned here: [Configuration](https://github.com/cyb2rS2c/RedFlag/edit/main/README.md#Configuration)
+- Supports configurable actions as mentioned here: [Configuration](https://github.com/cyb2rS2c/RedFlag/blob/main/README.md#configuration)
 
 ---
 
