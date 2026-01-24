@@ -110,13 +110,6 @@ def warn_user(uid, message=None, entry=None):
 
     log_user_warning(username, message)
 
-def lock_screen():
-    if ENABLE_SCREEN_LOCK:
-        subprocess.run(["loginctl", "lock-session"], check=False)
-
-def logout_user(uid):
-    if ENABLE_LOGOUT:
-        subprocess.run(["loginctl", "terminate-user", str(uid)], check=False)
 
 def log_violation(uid, comm, cmd, msg):
     msg_clean = (msg[:100] + '...') if len(msg) > 100 else msg
@@ -127,8 +120,44 @@ def log_violation(uid, comm, cmd, msg):
     )
 
 last_violation = defaultdict(set)
+def get_user_sessions(uid):
+    """Return all active session IDs for a given UID."""
+    sessions = []
+    try:
+        output = subprocess.check_output(
+            ["loginctl", "list-sessions", "--no-legend"], text=True
+        )
+        for line in output.splitlines():
+            parts = line.split()
+            if len(parts) >= 2 and int(parts[1]) == int(uid):
+                sessions.append(parts[0])
+    except Exception as e:
+        print(f"[!] Could not list sessions for UID {uid}: {e}")
+    return sessions
+
+def lock_screen(uid):
+    """Lock all active sessions for a given UID."""
+    if not ENABLE_SCREEN_LOCK:
+        return
+    sessions = get_user_sessions(uid)
+    if not sessions:
+        print(f"[!] No active sessions found for UID {uid}, cannot lock screen")
+        return
+    for session in sessions:
+        subprocess.run(["loginctl", "lock-session", session], check=False)
+        print(f"[+] Locked session {session} for UID {uid}")
+
+def logout_user(uid):
+    """Logout all active sessions for a given UID."""
+    if not ENABLE_LOGOUT:
+        return
+    sessions = get_user_sessions(uid)
+    for session in sessions:
+        subprocess.run(["loginctl", "terminate-session", session], check=False)
+        print(f"[+] Terminated session {session} for UID {uid}")
 
 def handle_violation(uid, cmd, comm="unknown", msg="", entry=None):
+    """Handle forbidden command violations."""
     if cmd in last_violation[uid]:
         return
     last_violation[uid].add(cmd)
@@ -136,11 +165,14 @@ def handle_violation(uid, cmd, comm="unknown", msg="", entry=None):
     print(f"[!] UID {uid} violated: {cmd}")
     log_violation(uid, comm, cmd, msg)
     notify_root(f"UID {uid} executed forbidden command: {cmd}")
-    if violations[uid] == 1:
+
+    if ENABLE_USER_WARNING:
         warn_user(uid, f"[WARNING] You executed a forbidden command: {cmd}", entry=entry)
-    elif violations[uid] == 2:
-        lock_screen()
-    elif violations[uid] >= VIOLATION_THRESHOLD:
+
+    if ENABLE_SCREEN_LOCK:
+        lock_screen(uid)
+
+    if ENABLE_LOGOUT and violations[uid] >= VIOLATION_THRESHOLD:
         logout_user(uid)
 
 def monitor_journal():
