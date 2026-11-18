@@ -1,4 +1,4 @@
-# RedFlag
+# Sentinelix
 
 ![Python](https://img.shields.io/badge/Python-3.8%2B-blue?logo=python)
 ![Platform](https://img.shields.io/badge/%7C%20Linux-green?logo=linux)
@@ -7,7 +7,7 @@
 
 ---
 
-> **RedFlag** is a real-time user activity monitoring service for Linux systems. It tracks attempts to run forbidden or sensitive commands and immediately alerts both administrators and users. All violations are logged for accountability, and the service can take automated actions such as sending warnings, locking screens, temporarily locking user accounts, or logging users out. 
+> **Sentinelix** is a real-time user activity monitoring service for Linux systems. It tracks attempts to run forbidden or sensitive commands and immediately alerts both administrators and users. All violations are logged for accountability, and the service can take automated actions such as sending warnings, locking screens, temporarily locking user accounts, or logging users out. 
 
 ---
 
@@ -20,7 +20,7 @@
   - `/var/log/user_activity.log` (central log for admins)
   - `/var/log/user_warnings/<username>.log` (per-user warnings)
 - Notifies root via `wall` for critical violations.
-- Supports configurable actions as mentioned here: [Configuration](https://github.com/cyb2rS2c/RedFlag/blob/main/README.md#configuration)
+- Supports configurable actions as mentioned here: [Configuration](https://github.com/cyb2rS2c/Sentinelix/blob/main/README.md#configuration)
 
 ---
 
@@ -30,8 +30,8 @@
 
 ```bash
 sudo su
-git clone https://github.com/cyb2rS2c/RedFlag.git /opt/RedFlag
-cd /opt/RedFlag
+git clone https://github.com/cyb2rS2c/Sentinelix.git /opt/Sentinelix
+cd /opt/Sentinelix
 chmod +x fix_owner.sh
 ./fix_owner.sh
 ```
@@ -81,7 +81,7 @@ ACCOUNT_LOCK_DURATION = 900        # Seconds (15 minutes)
 
 ## Usage
 
-Once deployed, RedFlag runs in the background as a systemd service.
+Once deployed, Sentinelix runs in the background as a systemd service.
 
 To check its status:
 ```bash
@@ -97,7 +97,7 @@ sudo cat /var/log/user_activity.log
 sudo cat /var/log/user_warnings/<username>.log
 ```
 ## Notes
-- If an account has been locked by RedFlag and you don’t want to wait for the 15‑minute auto‑unlock period, you can manually unlock it with:
+- If an account has been locked by Sentinelix and you don’t want to wait for the 15‑minute auto‑unlock period, you can manually unlock it with:
 ```bash
 sudo usermod -U <username>
 ```
