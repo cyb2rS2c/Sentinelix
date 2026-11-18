@@ -1,12 +1,12 @@
 [Unit]
-Description=RedFlag User Activity Monitor
+Description=Sentinelix User Activity Monitor
 After=network.target
 
 [Service]
 User=root
 Type=simple
-ExecStart=/usr/bin/python3 /opt/RedFlag/monitor.py
-WorkingDirectory=/opt/RedFlag
+ExecStart=/usr/bin/python3 /opt/Sentinelix/monitor.py
+WorkingDirectory=/opt/Sentinelix
 Restart=always
 StandardOutput=journal
 StandardError=journal
